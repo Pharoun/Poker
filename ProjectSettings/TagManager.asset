@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - slider
+  - chips1
+  - betText
+  - pic1
+  - players
+  - chips2
+  - pic2
   layers:
   - Default
   - TransparentFX
