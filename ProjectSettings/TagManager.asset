@@ -5,12 +5,17 @@ TagManager:
   serializedVersion: 2
   tags:
   - slider
-  - chips1
   - betText
-  - pic1
-  - players
-  - chips2
+  - helper
+  - pic
+  - name
+  - Undefined
   - pic2
+  - name2
+  - player1
+  - player2
+  - player3
+  - player4
   layers:
   - Default
   - TransparentFX
