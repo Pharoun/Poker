@@ -11,121 +11,137 @@ public class player : NetworkBehaviour
     public GameObject buttons;
     public Text betText;
     public Image chips;
-    public Image pic;
-    public Text name1;
-
-    //public Image pic2;
-    //public Text name2;
-
-    //public Image pic3;
-    //public Text name3;
-    //public Image pic4;
-    //public Text name4;
 
     public Sprite[] chipsImages;
     public Sprite[] avatars;
 
     private int betTotal;
-    //private int count;
-
-    string randomString = string.Empty;
 
     GameObject[] players;
 
+    int player1pic;
+    int player2pic;
+    int player3pic;
+    int player4pic;
+
+    string name1string;
+    string name2string;
+    string name3string;
+    string name4string;
+
+    GameObject pic1;
+    GameObject pic2;
+    GameObject pic3;
+    GameObject pic4;
+
+    GameObject name1;
+    GameObject name2;
+    GameObject name3;
+    GameObject name4;
+
+    GameObject helperObject;
+
     void Start()
     {
+        
+    }
 
-        //pic2 = GameObject.FindGameObjectWithTag("pic2").GetComponent<Image>();
-        //name2 = GameObject.FindGameObjectWithTag("name2").GetComponent<Text>();
-        pic.sprite = avatars[Random.Range(0, 6)];
-        CreateRandomString(7);
-        name1.text = randomString;
+    public void beginning()
+    {
+        helperObject = GameObject.FindGameObjectWithTag("helper");
+        helper helperClass = helperObject.GetComponent<helper>();
 
-        //count = 0;
         players = GameObject.FindGameObjectsWithTag("Player");
 
-        //foreach (GameObject go in players)
-        //{
-        //    count++;
-        //}
+        Debug.Log("player script players: " + players.Length);
 
-        CmdShowPlayer();
+        if (players.Length == 1)
+        {
+            player1pic = helperClass.player1Pic;
+            name1string = helperClass.player1Name;
+        }
+
+        if (players.Length == 2)
+        {
+            player2pic = helperClass.player2Pic;
+            name2string = helperClass.player2Name;
+        }
+
+        if (players.Length == 3)
+        {
+            player3pic = helperClass.player3Pic;
+            name3string = helperClass.player3Name;
+        }
+
+        if (players.Length == 4)
+        {
+            player4pic = helperClass.player4Pic;
+            name4string = helperClass.player4Name;
+        }
+
+        CmdShowPlayer(player1pic, name1string, player2pic, name2string, player3pic, name3string, player4pic, name4string);
     }
 
     [Command(requiresAuthority = false)]
-    void CmdShowPlayer()
+    void CmdShowPlayer(int player1pic, string name1string, int player2pic, string name2string, int player3pic, string name3string, int player4pic, string name4string)
     {
-        RpcShowPlayer();
+        RpcShowPlayer(player1pic, name1string, player2pic, name2string, player3pic, name3string, player4pic, name4string);
     }
 
     [ClientRpc]
-    void RpcShowPlayer()
+    void RpcShowPlayer(int player1pic, string name1string, int player2pic, string name2string, int player3pic, string name3string, int player4pic, string name4string)
     {
+
+        pic1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(0).gameObject;
+        name1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(1).gameObject;
+        pic2 = GameObject.FindGameObjectWithTag("player2").transform.GetChild(0).gameObject;
+        name2 = GameObject.FindGameObjectWithTag("player2").transform.GetChild(1).gameObject;
+        pic3 = GameObject.FindGameObjectWithTag("player3").transform.GetChild(0).gameObject;
+        name3 = GameObject.FindGameObjectWithTag("player3").transform.GetChild(1).gameObject;
+        pic4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(0).gameObject;
+        name4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(1).gameObject;
+        players = GameObject.FindGameObjectsWithTag("Player");
 
         if (hasAuthority)
         {
-
-            gameObject.transform.parent = GameObject.FindGameObjectWithTag("player1").transform;
-            gameObject.transform.localPosition = new Vector3(-70, 0, 0);
-            gameObject.transform.localScale = new Vector3(1, 1, 1);
-
-            //foreach (GameObject go in players)
-            //{
-            //    if (go != gameObject)
-            //    {
-            //        foreach (Transform child in go.transform)
-            //        {
-            //            if (child.tag == "pic")
-            //                pic2.sprite = child.GetComponent<Image>().sprite;
-
-            //            if (child.tag == "name")
-            //                name2.text = child.GetComponent<Text>().text;
-            //        }
-            //    }
-            //}
-
+            pic1.GetComponent<Image>().sprite = avatars[player1pic];
+            name1.GetComponent<Text>().text = name1string;
         }
         else
         {
-            if(players.Length == 2)
+            if (players.Length == 2)
             {
-                gameObject.transform.parent = GameObject.FindGameObjectWithTag("player2").transform;
-                gameObject.transform.localPosition = new Vector3(0, 0, 0);
-                gameObject.transform.localScale = new Vector3(1, 1, 1);
+                pic1.GetComponent<Image>().sprite = avatars[player1pic];
+                name1.GetComponent<Text>().text = name1string;
+                pic2.GetComponent<Image>().sprite = avatars[player2pic];
+                name2.GetComponent<Text>().text = name2string;
             }
 
             if (players.Length == 3)
             {
-                gameObject.transform.parent = GameObject.FindGameObjectWithTag("player3").transform;
-                gameObject.transform.localPosition = new Vector3(0, 0, 0);
-                gameObject.transform.localScale = new Vector3(1, 1, 1);
+                pic1.GetComponent<Image>().sprite = avatars[player1pic];
+                name1.GetComponent<Text>().text = name1string;
+                pic2.GetComponent<Image>().sprite = avatars[player2pic];
+                name2.GetComponent<Text>().text = name2string;
+                pic3.GetComponent<Image>().sprite = avatars[player3pic];
+                name3.GetComponent<Text>().text = name3string;
             }
 
             if (players.Length == 4)
             {
-                gameObject.transform.parent = GameObject.FindGameObjectWithTag("player4").transform;
-                gameObject.transform.localPosition = new Vector3(0, 0, 0);
-                gameObject.transform.localScale = new Vector3(1, 1, 1);
+                pic1.GetComponent<Image>().sprite = avatars[player1pic];
+                name1.GetComponent<Text>().text = name1string;
+                pic2.GetComponent<Image>().sprite = avatars[player2pic];
+                name2.GetComponent<Text>().text = name2string;
+                pic3.GetComponent<Image>().sprite = avatars[player3pic];
+                name3.GetComponent<Text>().text = name3string;
+                pic4.GetComponent<Image>().sprite = avatars[player4pic];
+                name4.GetComponent<Text>().text = name4string;
             }
 
             slider.gameObject.SetActive(false);
             buttons.SetActive(false);
         }
-    }
-
-    private void CreateRandomString(int stringLength = 7)
-    {
-        int _stringLength = stringLength - 1;
-        string[] characters = new string[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
-        for (int i = 0; i <= _stringLength; i++)
-        {
-            randomString = randomString + characters[Random.Range(0, characters.Length)];
-        }
-    }
-
-    void Update()
-    {
-        
     }
 
     public void sliderValue()

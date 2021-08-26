@@ -6,16 +6,13 @@ TagManager:
   tags:
   - slider
   - betText
-  - helper
-  - pic
-  - name
   - Undefined
-  - pic2
-  - name2
   - player1
   - player2
   - player3
   - player4
+  - helper
+  - game
   layers:
   - Default
   - TransparentFX
