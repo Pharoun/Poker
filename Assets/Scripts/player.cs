@@ -17,17 +17,8 @@ public class player : NetworkBehaviour
 
     private int betTotal;
 
-    GameObject[] players;
-
-    int player1pic;
-    int player2pic;
-    int player3pic;
-    int player4pic;
-
-    string name1string;
-    string name2string;
-    string name3string;
-    string name4string;
+    string playerName;
+    //int playerPic;
 
     GameObject pic1;
     GameObject pic2;
@@ -39,58 +30,41 @@ public class player : NetworkBehaviour
     GameObject name3;
     GameObject name4;
 
-    GameObject helperObject;
+    gameHelper help;
 
-    void Start()
+    InputField log;
+
+
+    public void Start()
     {
-        
+        log = GameObject.FindGameObjectWithTag("log").GetComponent<InputField>();
+        help = GameObject.FindGameObjectWithTag("gameHelper").GetComponent<gameHelper>();
+
+        pic1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(0).gameObject;
+        name1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(1).gameObject;
+
+        name1.GetComponent<Text>().text = help.avatarName;
+        pic1.GetComponent<Image>().sprite = avatars[help.pic];
+
+        //playerName = help.avatarName; 
+        //playerPic = help.pic;
     }
 
-    public void beginning()
+    public override void OnStartClient()
     {
-        helperObject = GameObject.FindGameObjectWithTag("helper");
-        helper helperClass = helperObject.GetComponent<helper>();
+        base.OnStartClient();
 
-        players = GameObject.FindGameObjectsWithTag("Player");
+        log = GameObject.FindGameObjectWithTag("log").GetComponent<InputField>();
+        help = GameObject.FindGameObjectWithTag("gameHelper").GetComponent<gameHelper>();
+        name1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(1).gameObject;
 
-        Debug.Log("player script players: " + players.Length);
+        playerName = help.avatarName;
+        //playerName = name1.GetComponent<Text>().text;
+        //playerPic = help.pic;
 
-        if (players.Length == 1)
-        {
-            player1pic = helperClass.player1Pic;
-            name1string = helperClass.player1Name;
-        }
+        help.clientActivePlayer();
 
-        if (players.Length == 2)
-        {
-            player2pic = helperClass.player2Pic;
-            name2string = helperClass.player2Name;
-        }
-
-        if (players.Length == 3)
-        {
-            player3pic = helperClass.player3Pic;
-            name3string = helperClass.player3Name;
-        }
-
-        if (players.Length == 4)
-        {
-            player4pic = helperClass.player4Pic;
-            name4string = helperClass.player4Name;
-        }
-
-        CmdShowPlayer(player1pic, name1string, player2pic, name2string, player3pic, name3string, player4pic, name4string);
-    }
-
-    [Command(requiresAuthority = false)]
-    void CmdShowPlayer(int player1pic, string name1string, int player2pic, string name2string, int player3pic, string name3string, int player4pic, string name4string)
-    {
-        RpcShowPlayer(player1pic, name1string, player2pic, name2string, player3pic, name3string, player4pic, name4string);
-    }
-
-    [ClientRpc]
-    void RpcShowPlayer(int player1pic, string name1string, int player2pic, string name2string, int player3pic, string name3string, int player4pic, string name4string)
-    {
+        log.text += "client joined \n";
 
         pic1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(0).gameObject;
         name1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(1).gameObject;
@@ -100,48 +74,39 @@ public class player : NetworkBehaviour
         name3 = GameObject.FindGameObjectWithTag("player3").transform.GetChild(1).gameObject;
         pic4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(0).gameObject;
         name4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(1).gameObject;
-        players = GameObject.FindGameObjectsWithTag("Player");
 
-        if (hasAuthority)
+        foreach (gameHelper.PlayerVals pl in help.ActivePlayers)
         {
-            pic1.GetComponent<Image>().sprite = avatars[player1pic];
-            name1.GetComponent<Text>().text = name1string;
+
+            log.text += "playername: " + playerName + " \n";
+            log.text += "pl.name: " + pl.name + " \n";
+
+            if (playerName != pl.name && playerName != string.Empty && playerName != null)
+            {
+
+                if (name2.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != pl.name)
+                {
+                    name2.GetComponent<Text>().text = pl.name;
+                    pic2.GetComponent<Image>().sprite = avatars[pl.pic];
+                    break;
+                }
+                else if (name3.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != pl.name && name2.GetComponent<Text>().text != pl.name)
+                {
+                    name3.GetComponent<Text>().text = pl.name;
+                    pic3.GetComponent<Image>().sprite = avatars[pl.pic];
+                    break;
+                }
+                else if (name4.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != pl.name && name2.GetComponent<Text>().text != pl.name && name3.GetComponent<Text>().text != pl.name)
+                {
+                    name4.GetComponent<Text>().text = pl.name;
+                    pic4.GetComponent<Image>().sprite = avatars[pl.pic];
+                    break;
+                }
+            }
         }
-        else
-        {
-            if (players.Length == 2)
-            {
-                pic1.GetComponent<Image>().sprite = avatars[player1pic];
-                name1.GetComponent<Text>().text = name1string;
-                pic2.GetComponent<Image>().sprite = avatars[player2pic];
-                name2.GetComponent<Text>().text = name2string;
-            }
 
-            if (players.Length == 3)
-            {
-                pic1.GetComponent<Image>().sprite = avatars[player1pic];
-                name1.GetComponent<Text>().text = name1string;
-                pic2.GetComponent<Image>().sprite = avatars[player2pic];
-                name2.GetComponent<Text>().text = name2string;
-                pic3.GetComponent<Image>().sprite = avatars[player3pic];
-                name3.GetComponent<Text>().text = name3string;
-            }
+        log.text += "end client joined \n";
 
-            if (players.Length == 4)
-            {
-                pic1.GetComponent<Image>().sprite = avatars[player1pic];
-                name1.GetComponent<Text>().text = name1string;
-                pic2.GetComponent<Image>().sprite = avatars[player2pic];
-                name2.GetComponent<Text>().text = name2string;
-                pic3.GetComponent<Image>().sprite = avatars[player3pic];
-                name3.GetComponent<Text>().text = name3string;
-                pic4.GetComponent<Image>().sprite = avatars[player4pic];
-                name4.GetComponent<Text>().text = name4string;
-            }
-
-            slider.gameObject.SetActive(false);
-            buttons.SetActive(false);
-        }
     }
 
     public void sliderValue()
