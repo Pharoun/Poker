@@ -36,6 +36,7 @@ public class player : NetworkBehaviour
     InputField log;
 
     GameObject mainMenuButton;
+    GameObject leaveButton;
 
 
     public void listAdded(gameHelper.PlayerVals plv)
@@ -99,6 +100,7 @@ public class player : NetworkBehaviour
         {
 
             mainMenuButton.GetComponent<Button>().interactable = false;
+            leaveButton.GetComponent<Button>().interactable = true;
 
             name1.GetComponent<Text>().text = gameHelp.avatarName;
             pic1.GetComponent<Image>().sprite = avatars[gameHelp.avatarPic];
@@ -120,6 +122,7 @@ public class player : NetworkBehaviour
         defineVars();
 
         mainMenuButton.GetComponent<Button>().interactable = true;
+        leaveButton.GetComponent<Button>().interactable = false;
 
         Debug.Log("sending remove");
         log.text += "sending remove \n";
@@ -190,6 +193,7 @@ public class player : NetworkBehaviour
     void defineVars()
     {
         mainMenuButton = GameObject.FindGameObjectWithTag("mainButton");
+        leaveButton = GameObject.FindGameObjectWithTag("leaveButton");
         log = GameObject.FindGameObjectWithTag("log").GetComponent<InputField>();
         gameHelp = GameObject.FindGameObjectWithTag("gameHelper").GetComponent<gameHelper>();
         pic1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(0).gameObject;

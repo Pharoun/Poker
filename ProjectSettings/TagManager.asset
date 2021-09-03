@@ -16,6 +16,7 @@ TagManager:
   - gameHelper
   - canvas
   - mainButton
+  - leaveButton
   layers:
   - Default
   - TransparentFX
