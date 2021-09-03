@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.SceneManagement;
+
 
 public class gameHelper : NetworkBehaviour
 {
@@ -90,6 +92,10 @@ public class gameHelper : NetworkBehaviour
     [Command(requiresAuthority = false)]
     void CmdDiscActivePlayer(PlayerVals plv)
     {
-        ActivePlayers.Remove(plv);
+        for(int i = 0; i < ActivePlayers.Count; i++)
+        {
+            if (ActivePlayers[i].name == plv.name)
+                ActivePlayers.RemoveAt(i);
+        }    
     }
 }

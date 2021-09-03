@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public class player : NetworkBehaviour
 {
@@ -32,70 +33,43 @@ public class player : NetworkBehaviour
     GameObject name4;
 
     gameHelper gameHelp;
-
     InputField log;
 
+    GameObject mainMenuButton;
 
-    public void Start()
-    {
-        pic1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(0).gameObject;
-        gameHelp = GameObject.FindGameObjectWithTag("gameHelper").GetComponent<gameHelper>();
-        name1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(1).gameObject;
-        name1.GetComponent<Text>().text = gameHelp.avatarName;
-        pic1.GetComponent<Image>().sprite = avatars[gameHelp.avatarPic];
-
-        gameObject.transform.parent = GameObject.FindGameObjectWithTag("canvas").transform;
-        gameObject.transform.localPosition = new Vector3(0, -180, 0);
-        gameObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-    }
 
     public void listAdded(gameHelper.PlayerVals plv)
     {
-        log = GameObject.FindGameObjectWithTag("log").GetComponent<InputField>();
-        gameHelp = GameObject.FindGameObjectWithTag("gameHelper").GetComponent<gameHelper>();
-        pic1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(0).gameObject;
-        name1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(1).gameObject;
-        pic2 = GameObject.FindGameObjectWithTag("player2").transform.GetChild(0).gameObject;
-        name2 = GameObject.FindGameObjectWithTag("player2").transform.GetChild(1).gameObject;
-        pic3 = GameObject.FindGameObjectWithTag("player3").transform.GetChild(0).gameObject;
-        name3 = GameObject.FindGameObjectWithTag("player3").transform.GetChild(1).gameObject;
-        pic4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(0).gameObject;
-        name4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(1).gameObject;
+        defineVars();
 
-        if (playerName != plv.name && playerName != string.Empty && playerName != null)
+        log.text += "list add \n";
+        log.text += playerName + " \n";
+        log.text += plv.name + " \n";
+
+        if (name2.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != plv.name)
         {
-
-            if (name2.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != plv.name)
-            {
-                name2.GetComponent<Text>().text = plv.name;
-                pic2.GetComponent<Image>().sprite = avatars[plv.pic];
-            }
-            else if (name3.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != plv.name && name2.GetComponent<Text>().text != plv.name)
-            {
-                name3.GetComponent<Text>().text = plv.name;
-                pic3.GetComponent<Image>().sprite = avatars[plv.pic];
-            }
-            else if (name4.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != plv.name && name2.GetComponent<Text>().text != plv.name && name3.GetComponent<Text>().text != plv.name)
-            {
-                name4.GetComponent<Text>().text = plv.name;
-                pic4.GetComponent<Image>().sprite = avatars[plv.pic];
-            }
+            name2.GetComponent<Text>().text = plv.name;
+            pic2.GetComponent<Image>().sprite = avatars[plv.pic];
+        }
+        else if (name3.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != plv.name && name2.GetComponent<Text>().text != plv.name)
+        {
+            name3.GetComponent<Text>().text = plv.name;
+            pic3.GetComponent<Image>().sprite = avatars[plv.pic];
+        }
+        else if (name4.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != plv.name && name2.GetComponent<Text>().text != plv.name && name3.GetComponent<Text>().text != plv.name)
+        {
+            name4.GetComponent<Text>().text = plv.name;
+            pic4.GetComponent<Image>().sprite = avatars[plv.pic];
         }
 
     }
 
     public void listremove(gameHelper.PlayerVals plv)
     {
-        log = GameObject.FindGameObjectWithTag("log").GetComponent<InputField>();
-        gameHelp = GameObject.FindGameObjectWithTag("gameHelper").GetComponent<gameHelper>();
-        pic1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(0).gameObject;
-        name1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(1).gameObject;
-        pic2 = GameObject.FindGameObjectWithTag("player2").transform.GetChild(0).gameObject;
-        name2 = GameObject.FindGameObjectWithTag("player2").transform.GetChild(1).gameObject;
-        pic3 = GameObject.FindGameObjectWithTag("player3").transform.GetChild(0).gameObject;
-        name3 = GameObject.FindGameObjectWithTag("player3").transform.GetChild(1).gameObject;
-        pic4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(0).gameObject;
-        name4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(1).gameObject;
+        defineVars(); 
+
+        Debug.Log("removed");
+        log.text += "removed \n";
 
         if (name2.GetComponent<Text>().text == plv.name)
         {
@@ -119,61 +93,74 @@ public class player : NetworkBehaviour
     {
         base.OnStartClient();
 
-        log = GameObject.FindGameObjectWithTag("log").GetComponent<InputField>();
-        gameHelp = GameObject.FindGameObjectWithTag("gameHelper").GetComponent<gameHelper>();
+        defineVars();
 
-        playerName = gameHelp.avatarName;
-        playerPic = gameHelp.avatarPic;
+        if(isLocalPlayer)
+        {
+
+            mainMenuButton.GetComponent<Button>().interactable = false;
+
+            name1.GetComponent<Text>().text = gameHelp.avatarName;
+            pic1.GetComponent<Image>().sprite = avatars[gameHelp.avatarPic];
+
+            gameObject.transform.parent = GameObject.FindGameObjectWithTag("canvas").transform;
+            gameObject.transform.localPosition = new Vector3(0, -180, 0);
+            gameObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+
+        }
+
         gameHelp.clientActivePlayer();
 
         log.text += "client joined \n";
 
-        pic1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(0).gameObject;
-        name1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(1).gameObject;
-        pic2 = GameObject.FindGameObjectWithTag("player2").transform.GetChild(0).gameObject;
-        name2 = GameObject.FindGameObjectWithTag("player2").transform.GetChild(1).gameObject;
-        pic3 = GameObject.FindGameObjectWithTag("player3").transform.GetChild(0).gameObject;
-        name3 = GameObject.FindGameObjectWithTag("player3").transform.GetChild(1).gameObject;
-        pic4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(0).gameObject;
-        name4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(1).gameObject;
+    }
 
-        foreach (gameHelper.PlayerVals pl in gameHelp.ActivePlayers)
-        {
+    public void clientExit()
+    {
+        defineVars();
 
-            log.text += "playername: " + playerName + " \n";
-            log.text += "pl.name: " + pl.name + " \n";
+        mainMenuButton.GetComponent<Button>().interactable = true;
 
-            if (playerName != pl.name && playerName != string.Empty && playerName != null)
-            {
+        Debug.Log("sending remove");
+        log.text += "sending remove \n";
 
-                if (name2.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != pl.name)
-                {
-                    name2.GetComponent<Text>().text = pl.name;
-                    pic2.GetComponent<Image>().sprite = avatars[pl.pic];
-                    break;
-                }
-                else if (name3.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != pl.name && name2.GetComponent<Text>().text != pl.name)
-                {
-                    name3.GetComponent<Text>().text = pl.name;
-                    pic3.GetComponent<Image>().sprite = avatars[pl.pic];
-                    break;
-                }
-                else if (name4.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != pl.name && name2.GetComponent<Text>().text != pl.name && name3.GetComponent<Text>().text != pl.name)
-                {
-                    name4.GetComponent<Text>().text = pl.name;
-                    pic4.GetComponent<Image>().sprite = avatars[pl.pic];
-                    break;
-                }
-            }
-        }
+        gameHelp.discActivePlayer();
 
-        log.text += "end client joined \n";
+        Debug.Log("sending remove1");
+        log.text += "sending remove1 \n";
+
+        name1.GetComponent<Text>().text = string.Empty;
+        pic1.GetComponent<Image>().sprite = noImage;
+        name2.GetComponent<Text>().text = string.Empty;
+        pic2.GetComponent<Image>().sprite = noImage;
+        name3.GetComponent<Text>().text = string.Empty;
+        pic3.GetComponent<Image>().sprite = noImage;
+        name4.GetComponent<Text>().text = string.Empty;
+        pic4.GetComponent<Image>().sprite = noImage;
+
+        Debug.Log("sending remove2");
+        log.text += "sending remove2 \n";
 
     }
 
-    public virtual void OnClientDisconnect(NetworkConnection conn)
+    public void mainMenu()
     {
-        gameHelp.discActivePlayer();
+        NetworkManager nw = FindObjectOfType<NetworkManager>();
+
+        if (NetworkServer.active && NetworkClient.isConnected)
+        {
+            nw.StopHost();
+        }
+        else if (NetworkClient.isConnected)
+        {
+            nw.StopClient();
+        }
+        else if (NetworkServer.active)
+        {
+            nw.StopServer();
+        }
+
+        SceneManager.LoadScene("Profile");
     }
 
     public void sliderValue()
@@ -198,6 +185,21 @@ public class player : NetworkBehaviour
             betTotal = 20000;
             chips.sprite = chipsImages[(betTotal / 1000)];
         }
+    }
+
+    void defineVars()
+    {
+        mainMenuButton = GameObject.FindGameObjectWithTag("mainButton");
+        log = GameObject.FindGameObjectWithTag("log").GetComponent<InputField>();
+        gameHelp = GameObject.FindGameObjectWithTag("gameHelper").GetComponent<gameHelper>();
+        pic1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(0).gameObject;
+        name1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(1).gameObject;
+        pic2 = GameObject.FindGameObjectWithTag("player2").transform.GetChild(0).gameObject;
+        name2 = GameObject.FindGameObjectWithTag("player2").transform.GetChild(1).gameObject;
+        pic3 = GameObject.FindGameObjectWithTag("player3").transform.GetChild(0).gameObject;
+        name3 = GameObject.FindGameObjectWithTag("player3").transform.GetChild(1).gameObject;
+        pic4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(0).gameObject;
+        name4 = GameObject.FindGameObjectWithTag("player4").transform.GetChild(1).gameObject;
     }
 
 }

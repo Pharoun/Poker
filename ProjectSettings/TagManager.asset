@@ -15,6 +15,7 @@ TagManager:
   - log
   - gameHelper
   - canvas
+  - mainButton
   layers:
   - Default
   - TransparentFX
