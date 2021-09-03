@@ -114,7 +114,7 @@ public class player : NetworkBehaviour
         quitPanel.gameObject.SetActive(true);
     }
 
-    public void yesButton()
+    public void standOut()
     {
         defineVars();
 
@@ -128,15 +128,58 @@ public class player : NetworkBehaviour
 
         name1.GetComponent<Text>().text = string.Empty;
         pic1.GetComponent<Image>().sprite = noImage;
-        name2.GetComponent<Text>().text = string.Empty;
-        pic2.GetComponent<Image>().sprite = noImage;
-        name3.GetComponent<Text>().text = string.Empty;
-        pic3.GetComponent<Image>().sprite = noImage;
-        name4.GetComponent<Text>().text = string.Empty;
-        pic4.GetComponent<Image>().sprite = noImage;
 
         Debug.Log("sending remove2");
         log.text += "sending remove2 \n";
+    }
+
+    public void sitStand()
+    {
+
+        GameObject standOut = GameObject.FindGameObjectWithTag("standOut");
+
+        if(standOut.transform.GetChild(0).GetComponent<Text>().text == "Sit Back")
+        {
+            defineVars();
+
+            name1.GetComponent<Text>().text = gameHelp.avatarName;
+            pic1.GetComponent<Image>().sprite = avatars[gameHelp.avatarPic];
+
+            gameHelp.clientActivePlayer();
+
+            standOut.transform.GetChild(0).GetComponent<Text>().text = "Stand Out";
+
+            GameObject leaveButton = GameObject.FindGameObjectWithTag("leave");
+            leaveButton.GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            defineVars();
+
+            Debug.Log("sending remove");
+            log.text += "sending remove \n";
+
+            gameHelp.discActivePlayer();
+
+            Debug.Log("sending remove1");
+            log.text += "sending remove1 \n";
+
+            name1.GetComponent<Text>().text = string.Empty;
+            pic1.GetComponent<Image>().sprite = noImage;
+
+            Debug.Log("sending remove2");
+            log.text += "sending remove2 \n";
+
+            standOut.transform.GetChild(0).GetComponent<Text>().text = "Sit Back";
+
+            GameObject leaveButton = GameObject.FindGameObjectWithTag("leave");
+            leaveButton.GetComponent<Button>().interactable = true;
+        }
+
+    }
+
+    public void yesButton()
+    {
 
         NetworkManager nw = FindObjectOfType<NetworkManager>();
 

@@ -16,6 +16,8 @@ TagManager:
   - canvas
   - quitPanel
   - netPlayers
+  - standOut
+  - leave
   layers:
   - Default
   - TransparentFX
