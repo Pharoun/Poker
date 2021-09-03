@@ -1118,7 +1118,7 @@ GameObject:
   - component: {fileID: 1107799074}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1275,7 +1275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  pic: 0
+  avatarPic: 0
   avatarName: 
 --- !u!114 &1449127015
 MonoBehaviour:

@@ -12,9 +12,9 @@ TagManager:
   - player4
   - helper
   - game
-  - initPanel
   - log
   - gameHelper
+  - canvas
   layers:
   - Default
   - TransparentFX

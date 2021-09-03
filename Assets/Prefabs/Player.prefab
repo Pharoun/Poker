@@ -1238,8 +1238,7 @@ MonoBehaviour:
   buttons: {fileID: 1536003248372270459}
   betText: {fileID: 1536003248404609395}
   chips: {fileID: 1536003247844191806}
-  pic: {fileID: 0}
-  name1: {fileID: 0}
+  noImage: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   chipsImages:
   - {fileID: 21300000, guid: 221afa62259ff9f45ac7a8ea27ce65cd, type: 3}
   - {fileID: 21300000, guid: d86b48dd78d9cd041b441e07db4f1377, type: 3}
@@ -1270,6 +1269,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b2d4723cd5261674eb4fe24efc227d42, type: 3}
   - {fileID: 21300000, guid: e3493adeef6e9db4aadb0d8755ad1303, type: 3}
   - {fileID: 21300000, guid: ea43e997a358b074fac39f0ae287459c, type: 3}
+  playerName: 
+  playerPic: 0
 --- !u!1 &3317463317772576922
 GameObject:
   m_ObjectHideFlags: 0
