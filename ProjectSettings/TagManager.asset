@@ -11,11 +11,11 @@ TagManager:
   - player3
   - player4
   - helper
-  - game
   - log
   - gameHelper
   - canvas
-  - mainButton
+  - quitPanel
+  - netPlayers
   layers:
   - Default
   - TransparentFX

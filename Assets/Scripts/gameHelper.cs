@@ -56,7 +56,6 @@ public class gameHelper : NetworkBehaviour
         public string name;
     }
 
-
     public void clientActivePlayer()
     {
 
@@ -74,8 +73,6 @@ public class gameHelper : NetworkBehaviour
     {
         ActivePlayers.Add(plv);
     }
-
-
 
     public void discActivePlayer()
     {

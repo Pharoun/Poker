@@ -19,9 +19,6 @@ public class player : NetworkBehaviour
 
     private int betTotal;
 
-    public string playerName;
-    public int playerPic;
-
     GameObject pic1;
     GameObject pic2;
     GameObject pic3;
@@ -35,15 +32,13 @@ public class player : NetworkBehaviour
     gameHelper gameHelp;
     InputField log;
 
-    GameObject mainMenuButton;
+    public Transform quitPanel;
 
 
     public void listAdded(gameHelper.PlayerVals plv)
     {
         defineVars();
 
-        log.text += "list add \n";
-        log.text += playerName + " \n";
         log.text += plv.name + " \n";
 
         if (name2.GetComponent<Text>().text == string.Empty && name1.GetComponent<Text>().text != plv.name)
@@ -98,12 +93,10 @@ public class player : NetworkBehaviour
         if(isLocalPlayer)
         {
 
-            mainMenuButton.GetComponent<Button>().interactable = false;
-
             name1.GetComponent<Text>().text = gameHelp.avatarName;
             pic1.GetComponent<Image>().sprite = avatars[gameHelp.avatarPic];
 
-            gameObject.transform.parent = GameObject.FindGameObjectWithTag("canvas").transform;
+            gameObject.transform.parent = GameObject.FindGameObjectWithTag("netPlayers").transform;
             gameObject.transform.localPosition = new Vector3(0, -180, 0);
             gameObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
@@ -117,9 +110,13 @@ public class player : NetworkBehaviour
 
     public void clientExit()
     {
-        defineVars();
+        quitPanel = GameObject.FindGameObjectWithTag("quitPanel").transform.GetChild(0).transform;
+        quitPanel.gameObject.SetActive(true);
+    }
 
-        mainMenuButton.GetComponent<Button>().interactable = true;
+    public void yesButton()
+    {
+        defineVars();
 
         Debug.Log("sending remove");
         log.text += "sending remove \n";
@@ -141,10 +138,6 @@ public class player : NetworkBehaviour
         Debug.Log("sending remove2");
         log.text += "sending remove2 \n";
 
-    }
-
-    public void mainMenu()
-    {
         NetworkManager nw = FindObjectOfType<NetworkManager>();
 
         if (NetworkServer.active && NetworkClient.isConnected)
@@ -161,6 +154,12 @@ public class player : NetworkBehaviour
         }
 
         SceneManager.LoadScene("Profile");
+    }
+
+    public void noButton()
+    {
+        quitPanel = GameObject.FindGameObjectWithTag("quitPanel").transform.GetChild(0).transform;
+        quitPanel.gameObject.SetActive(false);
     }
 
     public void sliderValue()
@@ -189,7 +188,6 @@ public class player : NetworkBehaviour
 
     void defineVars()
     {
-        mainMenuButton = GameObject.FindGameObjectWithTag("mainButton");
         log = GameObject.FindGameObjectWithTag("log").GetComponent<InputField>();
         gameHelp = GameObject.FindGameObjectWithTag("gameHelper").GetComponent<gameHelper>();
         pic1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(0).gameObject;
