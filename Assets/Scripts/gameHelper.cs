@@ -64,7 +64,7 @@ public class gameHelper : NetworkBehaviour
             pic = avatarPic,
             name = avatarName
         };
-
+        
         CmdActivePlayer(plv);
     }
 

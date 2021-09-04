@@ -13,11 +13,11 @@ TagManager:
   - helper
   - log
   - gameHelper
-  - canvas
   - quitPanel
   - netPlayers
   - standOut
   - leave
+  - game
   layers:
   - Default
   - TransparentFX
