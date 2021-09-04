@@ -74,13 +74,13 @@ public class gameHelper : NetworkBehaviour
         ActivePlayers.Add(plv);
     }
 
-    public void discActivePlayer()
+    public void discActivePlayer(int picc, string avName)
     {
 
         PlayerVals plv = new PlayerVals
         {
-            pic = avatarPic,
-            name = avatarName
+            pic = picc,
+            name = avName
         };
 
         CmdDiscActivePlayer(plv);

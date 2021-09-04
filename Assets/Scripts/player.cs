@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class player : NetworkBehaviour
 {
-
     GameObject container;
     GameObject chips1;
     Slider slider;
@@ -53,7 +52,9 @@ public class player : NetworkBehaviour
             gameObject.name = "local";
 
             defineVars();
+
             name1.GetComponent<Text>().text = gameHelp.avatarName;
+            gameObject.transform.GetChild(0).name = gameHelp.avatarName;
             pic1.GetComponent<Image>().sprite = avatars[gameHelp.avatarPic];
             gameObject.transform.parent = GameObject.FindGameObjectWithTag("netPlayers").transform;
             gameObject.transform.localPosition = new Vector3(0, 0, 0);
@@ -92,7 +93,7 @@ public class player : NetworkBehaviour
     {
         defineVars(); 
         Debug.Log("removed");
-        log.text += "removed \n";
+        log.text += plv.name + " removed \n";
 
         if (name2.GetComponent<Text>().text == plv.name)
         {
@@ -121,16 +122,6 @@ public class player : NetworkBehaviour
         quitPanel.gameObject.SetActive(true);
     }
 
-    public void standOut()
-    {
-        defineVars();
-        gameHelp.discActivePlayer();
-        name1.GetComponent<Text>().text = string.Empty;
-        pic1.GetComponent<Image>().sprite = noImage;
-        chips1.GetComponent<Image>().sprite = noChips;
-        container.SetActive(false);
-    }
-
     public void sitStand()
     {
         GameObject standOut = GameObject.FindGameObjectWithTag("standOut");
@@ -151,9 +142,7 @@ public class player : NetworkBehaviour
         {
             //standing up
             defineVars();
-            Debug.Log("sending remove");
-            log.text += "sending remove \n";
-            gameHelp.discActivePlayer();
+            gameHelp.discActivePlayer(gameHelp.avatarPic, gameHelp.avatarName);
             
             name1.GetComponent<Text>().text = string.Empty;
             pic1.GetComponent<Image>().sprite = noImage;
@@ -169,6 +158,7 @@ public class player : NetworkBehaviour
 
     public void yesButton()
     {
+
         NetworkManager nw = FindObjectOfType<NetworkManager>();
 
         if (NetworkServer.active && NetworkClient.isConnected)
@@ -284,14 +274,56 @@ public class player : NetworkBehaviour
     //    NetworkServer.Spawn(cd);
     //}
 
-    //public virtual void OnClientDisconnect(NetworkConnection conn)
+    //public override void OnStopClient()
     //{
-    //    standOut();
-    //}    
+    //    List<string> tabplayers = new List<string>();
+
+    //    if(name2.GetComponent<Text>().text != string.Empty)
+    //        tabplayers.Add(name2.GetComponent<Text>().text);
+    //    if (name3.GetComponent<Text>().text != string.Empty)
+    //        tabplayers.Add(name3.GetComponent<Text>().text);
+    //    if (name4.GetComponent<Text>().text != string.Empty)
+    //        tabplayers.Add(name4.GetComponent<Text>().text);
+
+    //    GameObject[] hierPlayers = GameObject.FindGameObjectsWithTag("Player");
+
+    //    foreach (string str in tabplayers)
+    //    {
+    //        int count = 0;
+    //        foreach (GameObject hi in hierPlayers)
+    //        {
+    //            if(str == hi.gameObject.transform.GetChild(0).name)
+    //            {
+    //                count = 1;
+    //            }
+    //        }
+    //        if(count == 0)
+    //        {
+    //            if (name2.GetComponent<Text>().text == str)
+    //            {
+    //                name2.GetComponent<Text>().text = string.Empty;
+    //                pic2.GetComponent<Image>().sprite = noImage;
+    //                chips2.GetComponent<Image>().sprite = noChips;
+    //            }
+    //            else if (name3.GetComponent<Text>().text == str)
+    //            {
+    //                name3.GetComponent<Text>().text = string.Empty;
+    //                pic3.GetComponent<Image>().sprite = noImage;
+    //                chips3.GetComponent<Image>().sprite = noChips;
+    //            }
+    //            else if (name4.GetComponent<Text>().text == str)
+    //            {
+    //                name4.GetComponent<Text>().text = string.Empty;
+    //                pic4.GetComponent<Image>().sprite = noImage;
+    //                chips4.GetComponent<Image>().sprite = noChips;
+    //            }
+    //        }
+    //    }
+    //}
 
     void defineVars()
     {
-        container = GameObject.Find("local").transform.GetChild(0).gameObject;
+        container = GameObject.Find("local").transform.GetChild(1).gameObject;
         slider = container.transform.GetChild(0).gameObject.GetComponent<Slider>();
         chips1 = container.transform.GetChild(2).gameObject;
         betText = slider.transform.GetChild(3).gameObject.GetComponent<Text>();
