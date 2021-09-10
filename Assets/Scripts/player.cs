@@ -49,17 +49,21 @@ public class player : NetworkBehaviour
 
     public override void OnStartClient()
     {
-        base.OnStartClient();
+        //base.OnStartClient();
 
         if (isLocalPlayer)
         {
             gameObject.name = "local";
 
-            defineVars();
+            name1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(1).gameObject;
+            pic1 = GameObject.FindGameObjectWithTag("player1").transform.GetChild(0).gameObject;
+            gameHelp = GameObject.FindGameObjectWithTag("gameHelper").GetComponent<gameHelper>();
+            log = GameObject.FindGameObjectWithTag("log").GetComponent<InputField>();
+            container = GameObject.Find("local").transform.GetChild(1).gameObject;
 
             name1.GetComponent<Text>().text = gameHelp.avatarName;
             pic1.GetComponent<Image>().sprite = avatars[gameHelp.avatarPic];
-
+            container.SetActive(true);
 
             log.text += "is local end \n";
 
@@ -70,8 +74,8 @@ public class player : NetworkBehaviour
         gameObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
         gameHelp = GameObject.FindGameObjectWithTag("gameHelper").GetComponent<gameHelper>();
-
         gameHelp.clientActivePlayer();
+
 
         log = GameObject.FindGameObjectWithTag("log").GetComponent<InputField>();
         log.text += "start end \n";
